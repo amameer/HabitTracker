@@ -1,9 +1,11 @@
 package com.misk.amna.habittracker;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,9 +30,22 @@ public class MainActivity extends AppCompatActivity {
                 HabitTrackerContract.HabitTrackerEntry.columnIsAlert,
                 HabitTrackerContract.HabitTrackerEntry.columnNote};
 
-        List mlist= mDbHelper.readColumn(HabitTrackerContract.HabitTrackerEntry.tableName,projection,HabitTrackerContract.HabitTrackerEntry.columnHabitName);
+        Cursor cursor=mDbHelper.readColumn(HabitTrackerContract.HabitTrackerEntry.tableName,projection);
+
+        List itemHabits = new ArrayList<>();
+
+        int colIndex = cursor.getColumnIndex(HabitTrackerContract.HabitTrackerEntry.columnHabitName);
+
+        while (cursor.moveToNext()) {
+
+            String itemHabit = cursor.getString(colIndex);
+            itemHabits.add(itemHabit);
+        }
+
+        cursor.close();
+
         TextView displayView = (TextView) findViewById(R.id.text);
-        displayView.setText("All Habit Names  :::"+mlist.toString());
+        displayView.setText("All Habit Names  :::"+itemHabits.toString());
 
     }
 

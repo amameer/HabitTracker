@@ -7,9 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class HabitTrackerDbHelper extends SQLiteOpenHelper {
 
     public static final int dbVersion = 1;
@@ -53,11 +50,11 @@ public class HabitTrackerDbHelper extends SQLiteOpenHelper {
         return db.insert(TableName, null, values);
     }
 
-    public List readColumn(String tableName, String[] projection, String ColumnName) {
+    public Cursor readColumn(String tableName, String[] projection) {
 
         SQLiteDatabase db = getReadableDatabase();
 
-        Cursor cursor = db.query(
+        return db.query(
                 tableName,
                 projection,
                 null,
@@ -66,19 +63,6 @@ public class HabitTrackerDbHelper extends SQLiteOpenHelper {
                 null,
                 null);
 
-        List itemHabits = new ArrayList<>();
-
-        int colIndex = cursor.getColumnIndex(ColumnName);
-
-        while (cursor.moveToNext()) {
-
-            String itemHabit = cursor.getString(colIndex);
-            itemHabits.add(itemHabit);
-        }
-
-        cursor.close();
-
-        return itemHabits;
     }
 
 
